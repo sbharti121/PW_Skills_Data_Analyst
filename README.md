@@ -1,1 +1,1 @@
-# PW_Skills_Data_Analyst
+To create data set for Assingment 1 & 2 run Mavenmovies.sql file 
