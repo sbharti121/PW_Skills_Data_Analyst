@@ -1,3 +1,12 @@
+/* Data set for project open below link.
+https://www.dol.gov/agencies/eta/foreign-labor/performance and download below data set
+LCA Programs (H-1B, H-1B1, E-3)	
+LCA_Disclosure_Data_FY2023_Q4.xlsx
+LCA_Disclosure_Data_FY2023_Q3.xlsx
+LCA_Disclosure_Data_FY2023_Q2.xlsx
+LCA_Disclosure_Data_FY2023_Q1.xlsx
+*/
+
 -- follow below step to upload bulk data via command prompt.
 
 -- Step 1 - cd C:\Program Files\MySQL\MySQL Server 8.0\bin  -- run this command
@@ -169,24 +178,23 @@ SET BEGIN_DATE = STR_TO_DATE(BEGIN_DATE , '%m/%d/%Y');
 UPDATE H1B_DATA
 SET END_DATE = STR_TO_DATE(END_DATE , '%m/%d/%Y');
 
-
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-SET innodb_lock_wait_timeout = 120; -- Set the timeout value in seconds
-SHOW VARIABLES LIKE 'wait_timeout';
-SHOW VARIABLES LIKE 'interactive_timeout';
-SET SESSION wait_timeout = 300;
-SET SESSION interactive_timeout = 300;
-SET GLOBAL wait_timeout = 300;
-SET GLOBAL interactive_timeout = 300;
-SET GLOBAL max_allowed_packet = 32 * 1024 * 1024;
-
--- Null value in table
+-- CHECKING FOR MISSING VALUES
+SELECT COUNT(*), COUNT(CASE WHEN CASE_NUMBER IS NULL THEN 1 END) AS NULL_COUNT FROM h1b_data;
+ 
+-- CHECKING FOR DUPLICATED VALUES
+SELECT CASE_NUMBER, COUNT(*) FROM h1b_data GROUP BY CASE_NUMBER HAVING COUNT(*) > 1
 
 
+/* Questions:-
+Which are the top employers in a certain state in a certain industry
+ 
+As we can see in this graph if you are looking for job title as data scientist in California 
+Google LLC is the employer you should target to get H1B visa similarly other employers such as 
+meta and apple are after google in sponsoring H1b visa
 
+Which functions seem to pay the most? Are there outliers in the salary data?
 
-select case_number, case when  WAGE_RATE_OF_PAY_FROM is null then 
-1 end from h1b_data;
+Are there certain types of jobs concentrated in certain geographical areas?
 
--- Check Duplicate 
-
+Types of Jobs which have the highest chance of H1B
+*/
